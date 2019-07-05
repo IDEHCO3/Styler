@@ -1,4 +1,4 @@
-# ctrl-adesao
+# Styler
 
 > A Vue.js project
 
