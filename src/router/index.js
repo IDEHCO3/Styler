@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Home from '@/pages/Home'
-import Login from '@/pages/Login'
+import StylesCcar from '@/components/StylesCcar'
+import OsmSvg from '@/components/OsmSvg'
 
 Vue.use(Router)
 
@@ -14,9 +16,14 @@ export default new Router({
       component: Home
     },
     {
-      path: '/Login',
-      name: 'Login',
-      component: Login
+      path: '/estilos_ccar',
+      name: 'Ccar',
+      component: StylesCcar
+    },
+    {
+      path: '/svg_osm',
+      name: 'SvgOsm',
+      component: OsmSvg
     }
   ]
 })

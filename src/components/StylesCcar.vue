@@ -1,5 +1,5 @@
 <template>
-    <v-card height="100%">
+    <v-container height="100%" pt-0 pb-0>
       <!--
       <v-flex ma-0 xs12 sm6 md3>
         <v-text-field append-icon="search" label="Procurar" 
@@ -44,9 +44,9 @@
       </v-data-table>
       
       <div class="text-xs-center pt-2">
-        <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="15"/>
+        <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="10"/>
       </div>
-    </v-card>
+    </v-container>
 </template>
 
 <script>
@@ -74,18 +74,12 @@ export default {
       ]
     }
   },
-  methods: {
-    test () {
-      console.log(this.ccarList)
-      console.log(this.list)
-    }
-  },
   computed: {
     ...mapGetters({ccarList: 'getCcar'}),
     searchedList (searchedText) {
       const style = this.ccarList
       this.list = style.filter(style => style.item.match(new RegExp(this.searchedText, 'i')))
-      console.log('aaa' + list)
+      console.log('aaa' + this.list)
       return this.list
     },
     pages () {
