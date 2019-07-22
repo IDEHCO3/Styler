@@ -1,19 +1,27 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <v-app id="app">
+    <nav-tab/>
+    <v-content class="pt-0">
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
+import NavTab from './components/NavTab'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
+  components: {
+    NavTab
+  },
   methods: {
-    ...mapActions(['FindStylesCcar'])
+    ...mapActions(['FindStylesCcar', 'FindOsmSvgList'])
   },
   created () {
     this.FindStylesCcar()
+    this.FindOsmSvgList()
   }
 }
 </script>

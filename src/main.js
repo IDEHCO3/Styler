@@ -12,7 +12,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 Vue.use(Vuetify, {
   iconfont: 'md',
   theme: {
-    primary: '#1976D2',
+    primary: '#4caf50',
     secondary: '#03DAC6',
     accent: '#82B1FF',
     error: '#FF5252',
@@ -27,8 +27,6 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 
 axios.defaults.baseURL = 'http://ggt-des.ibge.gov.br/styles/'
-axios.defaults.headers.common['Accept'] = 'application/json'
-axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 /* eslint-disable no-new */
 new Vue({

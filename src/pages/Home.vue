@@ -1,24 +1,15 @@
 <template>
-  <div>
-		<nav-tab></nav-tab>
-  </div>
+  <v-container>
+    <h2 class="black--text">Visualize e edite estilos, svgs, tffs etc! <br></h2>
+    <span class="version">Alpha Version</span>
+  </v-container>
 </template>
 
 <script>
-import NavTab from '../components/NavTab'
 export default {
-  name: 'Home',
-  components: {
-    NavTab
-  },
-  data () {
-    return {
-
-    }
-  }
+  name: 'Home'
 }
 </script>
 
 <style scoped>
-
 </style>
