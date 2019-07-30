@@ -1,19 +1,18 @@
 <template>
     <v-container>
       <v-list>
-        <v-list-tile v-for="(item, index) in OsmSvgList" :key="index" 
-          avatar @click.stop=""> 
+        <v-list-item v-for="(item, index) in OsmSvgList" :key="index" @click.stop=""> 
 
           <!-- item[0] é o nome, item[1] o link -->
-          <v-list-tile-avatar>
+          <v-list-item-avatar>
             <img :src="item[1]"/>
-          </v-list-tile-avatar>
+          </v-list-item-avatar>
 
-          <v-list-tile-content>
-            <v-list-tile-title v-html="item[0]"/>
-          </v-list-tile-content>
+          <v-list-item-content>
+            <v-list-item-title v-html="item[0]"/>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-flex>
               <v-btn icon @click.stop="viewImage(item)">
                 <v-icon>remove_red_eye</v-icon>
@@ -22,9 +21,9 @@
                 <v-icon>get_app</v-icon>
               </v-btn>
             </v-flex>
-          </v-list-tile-action>
+          </v-list-item-action>
           
-        </v-list-tile>
+        </v-list-item>
       </v-list>
       
       <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="10"/>
@@ -39,7 +38,7 @@
 
             <v-btn
               color="primary"
-              outline
+              outlined
               @click="ViewDialog = false"
             >
               Fechar

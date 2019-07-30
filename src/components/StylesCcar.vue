@@ -1,51 +1,60 @@
 <template>
-    <v-container height="100%" pt-0 pb-0>
-      <!--
-      <v-flex ma-0 xs12 sm6 md3>
-        <v-text-field append-icon="search" label="Procurar" 
-          solo-inverted
-          flat
-          outline
-          hide-details
-          v-model="searchedText"/>
-          <v-btn icon @click="test" title="Download">            
+    <v-container>
+      <v-card>
+        <v-card-title>
+          Estilos Ccar
+          <v-spacer></v-spacer>
+
+          <v-text-field
+            v-model="searchedText"
+            append-icon="search"
+            label="Buscar"
+            single-line
+            hide-details
+          ></v-text-field>
+
+        </v-card-title>
+
+        <v-data-table
+          :headers="headers"
+          :items="ccarList"
+          :search="searchedText"
+          :page.sync="page"
+          :items-per-page="12"
+          hide-default-footer
+          @page-count="pageCount = $event"
+        >
+        <template v-slot:item.action="{ item }">
+          <v-btn icon disabled title="Vizualizar">
+            <v-icon>remove_red_eye</v-icon>
+          </v-btn>
+          <v-btn icon disabled title="Editar">
+              <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn icon :href="item.url" target="_blank" title="Abrir codigo">
+            <v-icon>description</v-icon>
+          </v-btn>
+          <v-btn icon disabled title="Download">            
             <v-icon>get_app</v-icon>
           </v-btn>
-      </v-flex> -->
-      <v-data-table
-      :headers="headers"  :items="ccarList"
-      class="elevation-1" hide-actions
-      :pagination.sync="pagination" :rows-per-page-items="rows">
-        
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item[0] }}</td>
-          <td class="justify-center layout px-0">
-            <v-btn icon disabled title="Vizualizar">
-              <v-icon>remove_red_eye</v-icon>
-            </v-btn>
-            <v-btn icon disabled title="Editar">
-              <v-icon>edit</v-icon>
-            </v-btn>
-            <v-btn icon :href="props.item[1]" target="_blank" title="Abrir codigo">
-              <v-icon>description</v-icon>
-            </v-btn>
-            <v-btn icon disabled title="Download">            
-              <v-icon>get_app</v-icon>
-            </v-btn>
-          </td>
         </template>
-        
+
         <template v-slot:no-data>
           <v-alert :value="true" color="error" icon="warning">
             Error: dados não encontrados.
           </v-alert>
         </template>
+        
+        </v-data-table>
+        <v-pagination 
+          v-model="page" 
+          :length="pageCount" 
+          :total-visible="10"
+          :next-icon="'navigate_next'"
+          :prev-icon="'navigate_before'"
+        />
 
-      </v-data-table>
-      
-      <div class="text-xs-center pt-2">
-        <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="10"/>
-      </div>
+      </v-card>
     </v-container>
 </template>
 
@@ -57,34 +66,21 @@ export default {
   data () {
     return {
       searchedText: '',
-      pagination: {},
-      rows: [15],
-      styleList: [],
-      NameReposit: 'Ccar',
-      url: ' ',
-      dialog: false,
+      page: 1,
+      pageCount: 0,
       headers: [
         {
-          text: 'Nome do estilo',
+          text: 'Nome',
           align: 'center',
           sortable: false,
           value: 'name'
         },
-        { text: 'Ações', value: 'name', align: 'center', sortable: false }
+        { text: 'Ações', align: 'center', value: 'action', sortable: false }
       ]
     }
   },
   computed: {
-    ...mapGetters({ccarList: 'getCcar'}),
-    searchedList (searchedText) {
-      const style = this.ccarList
-      this.list = style.filter(style => style.item.match(new RegExp(this.searchedText, 'i')))
-      console.log('aaa' + this.list)
-      return this.list
-    },
-    pages () {
-      return this.pagination.rowsPerPage ? Math.ceil(this.ccarList.length / this.pagination.rowsPerPage) : 0
-    }
+    ...mapGetters({ccarList: 'getCcar'})
   }
 }
 </script>
