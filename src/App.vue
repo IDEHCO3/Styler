@@ -1,20 +1,20 @@
 <template>
   <v-app id="app">
-    <nav-tab/>
-    <v-content class="pt-0">
-      <router-view></router-view>
+    <nav-toolbar/>
+    <v-content class="pt-10">
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import NavTab from './components/NavTab'
+import NavToolbar from './components/NavToolbar'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
   components: {
-    NavTab
+    NavToolbar
   },
   methods: {
     ...mapActions(['FindStylesCcar', 'FindOsmSvgList'])
