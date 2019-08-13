@@ -5,6 +5,7 @@ import Home from '@/views/Home'
 import Help from '@/views/Help'
 import StylesCcar from '@/components/StylesCcar' // retirar da pasta de componentes e mover pra views futuramente
 import OsmSvg from '@/components/OsmSvg'
+import Fonts from '@/components/Fonts'
 
 Vue.use(Router)
 
@@ -22,8 +23,13 @@ export default new Router({
     },
     {
       path: '/styler/help',
-      name: 'help',
+      name: 'Help',
       component: Help
+    },
+    {
+      path: '/styler/fontes',
+      name: 'Fonts',
+      component: Fonts
     },
     {
       path: '/styler/estilos_ccar',

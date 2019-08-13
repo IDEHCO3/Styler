@@ -13,7 +13,17 @@ const actions = {
   },
   FindOsmSvgList ({ commit }) {
     Vue.axios.get(`osm/svgs/`)
-      .then(res => commit('setOsmSvgList', res.data))
+      .then(res =>  {
+        let ParsedResp = transformJsonInArray(res.data)
+        commit('setOsmSvgList', ParsedResp)
+      })
+  },
+  FindFontList ({ commit }) {
+    Vue.axios.get(`/fontes`)
+      .then(res =>  {
+        let ParsedResp = transformJsonInArray(res.data)
+        commit('setFontList', ParsedResp)
+      })
   }
 }
 
@@ -23,6 +33,9 @@ const getters = {
   },
   getOsmSvgList (state) {
     return state.osm_svg_list
+  },
+  getFontList (state) {
+    return state.font_list
   }
 }
 
@@ -31,7 +44,10 @@ const mutations = {
     state.ccar_list = ccarList
   },
   setOsmSvgList (state, OsmSvgList) {
-    state.osm_svg_list = Object.entries(OsmSvgList)
+    state.osm_svg_list = OsmSvgList
+  },
+  setFontList (state, FontList) {
+    state.font_list = FontList
   }
 }
 
@@ -52,7 +68,8 @@ function transformJsonInArray(json){
 
 const state = {
   ccar_list: [],
-  osm_svg_list: []
+  osm_svg_list: [],
+  font_list: []
 }
 
 export default new Vuex.Store({
