@@ -1,34 +1,64 @@
 <template>
     <v-container>
-      <v-list>
-        <v-list-item v-for="(item, index) in OsmSvgList" :key="index" @click.stop=""> 
+      <v-card>
+        <v-card-title>
+          Icones OSM
+          <v-spacer></v-spacer>
 
-          <!-- item[0] é o nome, item[1] o link -->
-          <v-list-item-avatar>
-            <img :src="item[1]"/>
-          </v-list-item-avatar>
+          <v-text-field
+            v-model="searchedText"
+            append-icon="search"
+            label="Buscar"
+            single-line
+            hide-details
+          ></v-text-field>
 
-          <v-list-item-content>
-            <v-list-item-title v-html="item[0]"/>
-          </v-list-item-content>
+        </v-card-title>
 
-          <v-list-item-action>
-            <v-flex>
-              <v-btn icon @click.stop="viewImage(item)">
-                <v-icon>remove_red_eye</v-icon>
-              </v-btn>
-              <v-btn icon :href="item[1]" target="_blank" >
-                <v-icon>get_app</v-icon>
-              </v-btn>
-            </v-flex>
-          </v-list-item-action>
-          
-        </v-list-item>
-      </v-list>
-      
-      <v-pagination color="primary" v-model="pagination.page" :length="pages" :total-visible="10"/>
+        <v-data-table
+          :headers="headers"
+          :items="list"
+          :search="searchedText"
+          :page.sync="page"
+          :items-per-page="12"
+          hide-default-footer
+          @page-count="pageCount = $event"
+        >
+          <template v-slot:item.action="{ item }">
+            <v-btn icon title="Vizualizar" @click="viewImage(item)">
+              <v-icon>remove_red_eye</v-icon>
+            </v-btn>
+            <v-btn icon :href="item.url" target="_blank" title="Nova aba">
+              <v-icon>description</v-icon>
+            </v-btn>
+            <v-btn icon disabled title="Download">            
+              <v-icon>get_app</v-icon>
+            </v-btn>
+          </template>
 
-      <v-dialog v-model="ViewDialog" max-width="600">
+          <template v-slot:item.url="{ item }">
+            <v-avatar>
+              <img :src="item.url">
+            </v-avatar>
+          </template>
+
+          <template v-slot:no-data>
+            <v-alert :value="true" color="error" icon="warning">
+              Error: dados não encontrados.
+            </v-alert>
+          </template>
+        
+        </v-data-table>
+        <v-pagination 
+          v-model="page" 
+          :length="pageCount" 
+          :total-visible="10"
+          :next-icon="'navigate_next'"
+          :prev-icon="'navigate_before'"
+        />
+      </v-card>
+
+      <v-dialog v-model="ViewImageDialog" max-width="600">
         <v-card>
           <img :src="imageUrl" height="500" width="500" class="mt-4"/>
           <v-card-actions>
@@ -39,7 +69,7 @@
             <v-btn
               color="primary"
               outlined
-              @click="ViewDialog = false"
+              @click="ViewImageDialog = false"
             >
               Fechar
             </v-btn>
@@ -47,33 +77,53 @@
         </v-card>
       </v-dialog>
       
-    </v-container>    
+    </v-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'DataTable',
   data () {
     return {
-      ViewDialog: false,
+      ViewImageDialog: false,
       imageName: '',
       imageUrl: '',
-      pagination: {}
+      searchedText: '',
+      page: 1,
+      pageCount: 0,
+      headers: [
+        {
+          text: 'Miniatura',
+          align: 'center',
+          sortable: false,
+          value: 'url'
+        },
+        {
+          text: 'Nome',
+          align: 'center',
+          sortable: false,
+          value: 'name'
+        },
+        {
+          text: 'Ações', 
+          align: 'center', 
+          value: 'action', 
+          sortable: false 
+        }
+      ]
     }
   },
   methods: {
-    viewImage (imageDataArray) {
-      this.imageName = imageDataArray[0]
-      this.imageUrl = imageDataArray[1]
-      this.ViewDialog = true
+    viewImage (image) {
+      this.imageName = image.name
+      this.imageUrl = image.url
+      this.ViewImageDialog = true
     }
   },
   computed: {
-    ...mapGetters({OsmSvgList: 'getOsmSvgList'}),
-    pages () {
-      return this.pagination.rowsPerPage ? Math.ceil(this.OsmSvgList.length / this.pagination.rowsPerPage) : 0
-    }
+    ...mapGetters({list: `getOsmSvgList`}),
   }
 }
 </script>

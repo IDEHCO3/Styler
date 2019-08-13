@@ -11,14 +11,7 @@
         Styler 
         <small> v{{ apiVersion }} </small>
       </span>
-      <!--<v-text-field
-        solo-inverted
-        flat
-        hide-details
-        label="Buscar"
-        prepend-inner-icon="search"
-      ></v-text-field> -->
-      <v-spacer></v-spacer>
+      <v-spacer/>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -53,14 +46,14 @@
           <v-list-item
             v-else
             :key="i"
-            :to="item.route"
+            @click='routerPush(item)'
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title class="grey--text">
-                {{ item.text }}
+                {{ item.title }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -75,24 +68,27 @@ import {version} from '@/../package.json'
 
 export default {
   name: 'NavToolbar',
-  props: {
-    source: String,
-  },
   data: () => ({
     apiVersion: '',
     drawer: null,
     items: [
       { heading: 'Estilos' },
-      { icon: 'archive', text: 'Ccar', route: '/styler/estilos_ccar' },
-      // { icon: 'delete', text: 'Trash' },
+      { icon: 'archive', title: 'Ccar', routeName: 'Ccar' },
       { divider: true },
       { heading: 'Icones' },
-      { icon: 'location_on', text: 'OSM', route: '/styler/svg_osm' },
+      { icon: 'format_color_text', title: 'Fontes', routeName: 'Fonts'},
+      { icon: 'location_on', title: 'OSM', routeName: 'SvgOsm'},
       { divider: true },
-      { icon: 'settings', text: 'Configurações' },
-      { icon: 'help', text: 'Ajuda', route: '/styler/help' }
+      { icon: 'home', title: 'Inicio', routeName: 'Home' },
+      { icon: 'settings', title: 'Configurações' },
+      { icon: 'help', title: 'Ajuda', routeName: 'Help' }
     ],
   }),
+  methods: {
+    routerPush (item){
+      this.$router.push({name: item.routeName})
+    }
+  },
   created () {
     this.apiVersion = version
   }

@@ -1,6 +1,6 @@
 {
-  "name": "test-vuecli",
-  "version": "1.1.0",
+  "name": "Styler",
+  "version": "1.2.0",
   "private": true,
   "author": "Aryel Alves <mr.aryel@gmail.com>",
   "scripts": {

@@ -17,11 +17,12 @@ export default {
     NavToolbar
   },
   methods: {
-    ...mapActions(['FindStylesCcar', 'FindOsmSvgList'])
+    ...mapActions(['FindStylesCcar', 'FindOsmSvgList', 'FindFontList'])
   },
   created () {
     this.FindStylesCcar()
     this.FindOsmSvgList()
+    this.FindFontList()
   }
 }
 </script>

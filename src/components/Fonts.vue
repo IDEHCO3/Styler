@@ -2,7 +2,7 @@
     <v-container>
       <v-card>
         <v-card-title>
-          Estilos Ccar
+          Fontes
           <v-spacer></v-spacer>
 
           <v-text-field
@@ -11,13 +11,13 @@
             label="Buscar"
             single-line
             hide-details
-          ></v-text-field>
+          />
 
         </v-card-title>
 
         <v-data-table
           :headers="headers"
-          :items="ccarList"
+          :items="FontList"
           :search="searchedText"
           :page.sync="page"
           :items-per-page="12"
@@ -28,13 +28,7 @@
           <v-btn icon disabled title="Vizualizar">
             <v-icon>remove_red_eye</v-icon>
           </v-btn>
-          <v-btn icon disabled title="Editar">
-              <v-icon>edit</v-icon>
-          </v-btn>
-          <v-btn icon :href="item.url" target="_blank" title="Abrir codigo">
-            <v-icon>description</v-icon>
-          </v-btn>
-          <v-btn icon disabled title="Download">            
+          <v-btn icon  title="Download" target="_blank" :href="item.url">            
             <v-icon>get_app</v-icon>
           </v-btn>
         </template>
@@ -80,7 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ccarList: 'getCcar'})
+    ...mapGetters({FontList: 'getFontList'})
   }
 }
 </script>
