@@ -1,6 +1,8 @@
 <template>
     <v-container>
       <v-card>
+        <view-font v-if="viewFontDialog"/>
+
         <v-card-title>
           Fontes
           <v-spacer></v-spacer>
@@ -25,7 +27,7 @@
           @page-count="pageCount = $event"
         >
         <template v-slot:item.action="{ item }">
-          <v-btn icon disabled title="Vizualizar">
+          <v-btn icon title="Vizualizar" @click="viewFont(item)">
             <v-icon>remove_red_eye</v-icon>
           </v-btn>
           <v-btn icon  title="Download" target="_blank" :href="item.url">            
@@ -54,11 +56,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import viewFont from './ViewFont'
 
 export default {
-  name: 'ContentCenter',
+  name: 'Fonts',
+  components: {viewFont},
   data () {
     return {
+      viewFontDialog: false,
       searchedText: '',
       page: 1,
       pageCount: 0,
@@ -73,11 +78,16 @@ export default {
       ]
     }
   },
+  methods: {
+    viewFont (Afont) {
+      console.log(Afont)
+      console.log(this.viewFontDialog)
+      this.viewFontDialog = true
+    }
+  },
   computed: {
     ...mapGetters({FontList: 'getFontList'})
   }
 }
 </script>
 
-<style>
-</style>

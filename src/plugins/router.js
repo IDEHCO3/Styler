@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 import Home from '@/views/Home'
 import Help from '@/views/Help'
-import StylesCcar from '@/components/StylesCcar' // retirar da pasta de componentes e mover pra views futuramente
+import StylesCcar from '@/components/StylesCcar'
 import OsmSvg from '@/components/OsmSvg'
 import Fonts from '@/components/Fonts'
 
