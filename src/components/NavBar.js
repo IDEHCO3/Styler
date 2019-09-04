@@ -15,8 +15,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
 import Icon from '@material-ui/core/Icon';
+
+import FontLister from './Fonts'
 
 const drawerWidth = 240;
 
@@ -164,6 +165,7 @@ export default function PersistentDrawerLeft() {
         <Typography paragraph>
 					<h2>Visualize e edite estilos, svgs, tffs etc!</h2>
 					<span>Alpha Version</span>
+          <FontLister />
         </Typography>
       </main>
     </div>
