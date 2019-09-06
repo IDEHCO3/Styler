@@ -13,10 +13,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Icon from '@material-ui/core/Icon';
 
+// icons
+import ArchiveIcon from '@material-ui/icons/Archive';
+import TextFormatIcon from '@material-ui/icons/TextFormat';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+
+// Font Data table
 import FontLister from './Fonts'
 
 const drawerWidth = 240;
@@ -89,6 +93,17 @@ export default function PersistentDrawerLeft() {
 		]
 	}
 
+  function iconSelector(iconName) {
+    if ( iconName === 'archive' ){
+      return <ArchiveIcon/>
+    } else if ( iconName === 'format_color_text' ) {
+      return <TextFormatIcon/>
+    } else if ( iconName === 'location_on' ){
+      return <LocationOnIcon/>
+    }
+    return null
+  }
+
   function handleDrawerOpen() {
     setOpen(true);
   }
@@ -138,20 +153,20 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
             Estilos
-            {DrawerList.styles.map((item) => (
-							<ListItem button key={item.title}>
-							<ListItemIcon> <Icon>{item.icon}</Icon> </ListItemIcon>
-							<ListItemText primary={item.title} />
+            {DrawerList.styles.map((item, index) => (
+							<ListItem button key={index}>
+                {iconSelector(item.icon)}
+                <ListItemText primary={item.title} />
 							</ListItem>
             ))}
         </List>
         <Divider />
 				<List>
             Icones
-            {DrawerList.icons.map((item) => (
-							<ListItem button key={item.title}>
-							<ListItemIcon> <Icon>{item.icon}</Icon> </ListItemIcon>
-							<ListItemText primary={item.title} />
+            {DrawerList.icons.map((item, index) => (
+							<ListItem button key={index}>
+                {iconSelector(item.icon)}
+                <ListItemText primary={item.title} />
 							</ListItem>
             ))}
         </List>
@@ -162,11 +177,11 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>
-					<h2>Visualize e edite estilos, svgs, tffs etc!</h2>
-					<span>Alpha Version</span>
-          <FontLister />
-        </Typography>
+       
+        <h2>Visualize e edite estilos, svgs, tffs etc!</h2>
+        <span>Alpha Version</span>
+        <FontLister />
+         
       </main>
     </div>
   );

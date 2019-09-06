@@ -1,5 +1,21 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: 'http://ggt-des.ibge.gov.br/styles/' });
+export const api = axios.create({ baseURL: 'http://ggt-des.ibge.gov.br/styles/' });
 
-export default api;
+// make a array of objects with {name: "aaa", url: "www.aaa.com"} format
+export function transformEntryPointInArray(json){
+    var List = []
+    let nameList = Object.keys(json) // create a array of keys
+    let urlList = Object.values(json) // create a array of values
+
+    for (let item = 0; item < nameList.length; item++){
+
+        let SingleObject = {
+            name: nameList[item], 
+            url: urlList[item]
+        }
+
+        List.push(SingleObject)
+    }
+    return List
+}
