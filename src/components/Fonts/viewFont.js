@@ -4,42 +4,50 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import './styles.css'
 
-export default function MaxWidthDialog(props) {
-  const [open, setOpen] = React.useState(props.open);
+//Animais-IBGE-1.ttf
+const useStyles = makeStyles(theme => ({
+  fontContainer: {
+    color: 'red',
+    fontFamily: 'Animais-IBGE-1',
+    fontSize: '50px',
+  },
+}));
 
-  function handleClickOpen() {
-    setOpen(true);
-  }
+export default function ViewFontDialog(props) {
+  const classes = useStyles();
+  const fontName = props.font.name
+  const fontUrl = props.font.url
 
+  
   function handleClose() {
-    setOpen(false);
+    props.close();
   }
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        VER
-      </Button>
       <Dialog
         fullWidth
         maxWidth="lg"
-        open={open}
+        open={props.open}
         onClose={handleClose}
         aria-labelledby="max-width-dialog-title"
       >
-        <DialogTitle id="max-width-dialog-title">Animais-IBGE-1.ttf</DialogTitle>
+        <DialogTitle id="max-width-dialog-title">{fontName}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            os caracteres
-          </DialogContentText>
+          <div className={classes.fontContainer}>
+            A B C D E F G
+          </div>
         </DialogContent>
         <DialogActions>
+          <Button href={fontUrl} color="primary">
+            Download
+          </Button>
           <Button onClick={handleClose} color="primary">
-            Close
+            Fechar
           </Button>
         </DialogActions>
       </Dialog>

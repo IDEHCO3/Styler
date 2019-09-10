@@ -1,6 +1,5 @@
 import { api, transformEntryPointInArray } from '../../services/api';
 import ViewFont from './viewFont'
-import './styles.css'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -8,6 +7,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
@@ -17,6 +17,8 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -100,41 +102,33 @@ const useStyles2 = makeStyles(theme => ({
   },
 }));
 
-function createData(name) {
-  return { name };
-}
-
-const rows = [
-  createData('Cupcake'),
-  createData('Donut'),
-  createData('Eclair'),
-  createData('Frozen yoghurt'),
-  createData('Gingerbread'),
-  createData('Honeycomb'),
-  createData('Ice cream sandwich'),
-  createData('Jelly Bean'),
-  createData('KitKat'),
-  createData('Lollipop'),
-  createData('Marshmallow'),
-  createData('Nougat'),
-  createData('Oreo'),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [fontList, setFontList] = React.useState([]);
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [ClickedFont, setClickedFont] = React.useState({})
 
-  function handleChangePage(event, newPage) {
-    setPage(newPage);
-  }
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, fontList.length - page * rowsPerPage);
 
   React.useEffect(() => {
     getFontListFromApi()
   }, []) // the [] makes the effect run only once
+
+  function handleOpenViewFont(font) {
+    setClickedFont(font)
+    setIsOpen(true);
+  }
+
+  function handleCloseViewFont() {
+    setIsOpen(false);
+  }
+
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
 
   async function getFontListFromApi () {
     var response = {}
@@ -157,13 +151,26 @@ export default function CustomPaginationActionsTable() {
     <Paper className={classes.root}>
       <div className={classes.tableWrapper}>
         <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nome da fonte</TableCell>
+              <TableCell align="right">Ações</TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {fontList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map( (font , index) => (
               <TableRow key={index}>
                 <TableCell component="th" scope="row">
                   {font.name}
                 </TableCell>
-                <TableCell align="right"> <ViewFont/> </TableCell>
+                <TableCell align="right"> 
+                  <IconButton variant="outlined" color="primary" onClick={() => handleOpenViewFont(font)}>
+                    <VisibilityIcon/>
+                  </IconButton> 
+                  <IconButton variant="outlined" color="primary" href={font.url}>
+                    <GetAppIcon/>
+                  </IconButton> 
+                </TableCell>
               </TableRow>
             ))}
 
@@ -178,7 +185,7 @@ export default function CustomPaginationActionsTable() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 colSpan={3}
-                count={rows.length}
+                count={fontList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -193,6 +200,7 @@ export default function CustomPaginationActionsTable() {
           </TableFooter>
         </Table>
       </div>
+      <ViewFont open={isOpen} close={handleCloseViewFont} font={ClickedFont} />
     </Paper>
   );
 }
