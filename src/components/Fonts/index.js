@@ -115,7 +115,8 @@ export default function CustomPaginationActionsTable() {
 
   React.useEffect(() => {
     getFontListFromApi()
-  }, []) // the [] makes the effect run only once
+  }, []) // eslint-disable-line 
+  // the [] makes the effect run only once
 
   function handleOpenViewFont(font) {
     setClickedFont(font)
@@ -140,6 +141,31 @@ export default function CustomPaginationActionsTable() {
     
     let parsedResponse = transformEntryPointInArray(response.data)
     setFontList(parsedResponse)
+    importFontListToCss(parsedResponse)
+  }
+
+  function importFontListToCss (font_list) {
+    let head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style')
+
+    head.appendChild(style);
+    style.type = 'text/css';
+
+    let css =  font_list.map( font => 
+      `@font-face { 
+        font-family: "${font.name.split('.')[0]}";
+        src:  url(${font.url});
+        font-weight: normal;
+        font-style: normal;
+      }`
+    ).join(' ');
+    
+    if (style.styleSheet) {
+      // This is required for IE8 and below.
+      style.styleSheet.cssText = css;
+    } else {
+      style.appendChild(document.createTextNode(css));
+    }
   }
 
   function handleChangeRowsPerPage(event) {
