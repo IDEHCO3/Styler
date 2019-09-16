@@ -1,5 +1,5 @@
 import { api, transformEntryPointInArray } from '../../services/api';
-import ViewFont from './viewFont'
+import ViewSvg from './viewSvg'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -17,8 +17,12 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+
+//icons
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -106,66 +110,41 @@ export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [fontList, setFontList] = React.useState([]);
+  const [svgList, setSvgList] = React.useState([]);
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [ClickedFont, setClickedFont] = React.useState({})
+  const [clickedSvg, setClickedSvg] = React.useState({})
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, fontList.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, svgList.length - page * rowsPerPage);
 
   React.useEffect(() => {
-    getFontListFromApi()
+    getListFromApi()
   }, []) // eslint-disable-line 
   // the [] makes the effect run only once
 
-  function handleOpenViewFont(font) {
-    setClickedFont(font)
+  function handleOpenViewSvg(font) {
+    setClickedSvg(font)
     setIsOpen(true);
   }
 
-  function handleCloseViewFont() {
+  function handleCloseViewSvg() {
     setIsOpen(false);
   }
 
-  function handleChangePage(event, newPage) {
-    setPage(newPage);
-  }
-
-  async function getFontListFromApi () {
+  async function getListFromApi () {
     var response = {}
     try{
-      response = await api.get("/fontes")
+      response = await api.get("/osm/svgs")
     } catch (error){
       console.log(error)
     }
     
     let parsedResponse = transformEntryPointInArray(response.data)
-    setFontList(parsedResponse)
-    importFontListToCss(parsedResponse)
+    setSvgList(parsedResponse)
   }
 
-  function importFontListToCss (font_list) {
-    let head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style')
-
-    head.appendChild(style);
-    style.type = 'text/css';
-
-    let css =  font_list.map( font => 
-      `@font-face { 
-        font-family: "${font.name.split('.')[0]}";
-        src:  url(${font.url});
-        font-weight: normal;
-        font-style: normal;
-      }`
-    ).join(' ');
-    
-    if (style.styleSheet) {
-      // This is required for IE8 and below.
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
   }
 
   function handleChangeRowsPerPage(event) {
@@ -179,23 +158,30 @@ export default function CustomPaginationActionsTable() {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Nome da fonte</TableCell>
+                <TableCell>Miniatura </TableCell>
+              <TableCell>Nome do Svg </TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {fontList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map( (font , index) => (
+            {svgList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map( (item , index) => (
               <TableRow key={index}>
+                <TableCell>
+                    <Avatar src={item.url} className={classes.avatar} />
+                </TableCell>
                 <TableCell component="th" scope="row">
-                  {font.name}
+                  {item.name}
                 </TableCell>
                 <TableCell align="right"> 
-                  <IconButton color="primary" onClick={() => handleOpenViewFont(font)}>
-                    <VisibilityIcon/>
-                  </IconButton> 
-                  <IconButton color="primary" href={font.url}>
-                    <GetAppIcon/>
-                  </IconButton> 
+                    <IconButton color="primary" onClick={() => handleOpenViewSvg(item)}> 
+                        <VisibilityIcon/>
+                    </IconButton>
+                    <IconButton variant="outlined" color="primary" href={item.url} target="blank" title="Nova aba">
+                        <OpenInNewIcon/>
+                    </IconButton> 
+                    <IconButton disabled> 
+                        <GetAppIcon/>
+                    </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -211,7 +197,7 @@ export default function CustomPaginationActionsTable() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 colSpan={3}
-                count={fontList.length}
+                count={svgList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -226,7 +212,7 @@ export default function CustomPaginationActionsTable() {
           </TableFooter>
         </Table>
       </div>
-      <ViewFont open={isOpen} close={handleCloseViewFont} font={ClickedFont} />
+      <ViewSvg open={isOpen} close={handleCloseViewSvg} item={clickedSvg} />
     </Paper>
   );
 }

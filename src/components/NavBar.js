@@ -20,8 +20,11 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import TextFormatIcon from '@material-ui/icons/TextFormat';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-// Font Data table
-import FontLister from './Fonts'
+// Content Center
+import Home from './Home'
+import FontTable from './Fonts'
+import StylesTable from './Styles'
+import SvgTable from './Svg'
 
 const drawerWidth = 240;
 
@@ -84,14 +87,15 @@ const useStyles = makeStyles(theme => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [ open, setOpen ] = React.useState(false);
+  const [ navIndex, setNavIndex ] = React.useState(0)
 	const DrawerList = {
-		styles: [{ title: 'Ccar', icon: 'archive' }],
+		styles: [{ title: 'Ccar', icon: 'archive', index: 1 }],
 		icons: [
-			{ title: 'Fontes', icon: 'format_color_text'},
-			{ title: 'OSM', icon: 'location_on'}
+			{ title: 'Fontes', icon: 'format_color_text', index: 2},
+			{ title: 'OSM', icon: 'location_on', index: 3}
 		]
-	}
+  }
 
   function iconSelector(iconName) {
     if ( iconName === 'archive' ){
@@ -102,6 +106,18 @@ export default function PersistentDrawerLeft() {
       return <LocationOnIcon/>
     }
     return null
+  }
+
+  function contentSelector(){
+    if (navIndex === 0){
+      return <Home />
+    } else if (navIndex === 1){
+      return <StylesTable />
+    } else if (navIndex === 2){
+      return <FontTable />
+    } else if (navIndex === 3){
+      return <SvgTable />
+    }
   }
 
   function handleDrawerOpen() {
@@ -154,7 +170,7 @@ export default function PersistentDrawerLeft() {
         <List>
             Estilos
             {DrawerList.styles.map((item, index) => (
-							<ListItem button key={index}>
+							<ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
                 {iconSelector(item.icon)}
                 <ListItemText primary={item.title} />
 							</ListItem>
@@ -164,7 +180,7 @@ export default function PersistentDrawerLeft() {
 				<List>
             Icones
             {DrawerList.icons.map((item, index) => (
-							<ListItem button key={index}>
+							<ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
                 {iconSelector(item.icon)}
                 <ListItemText primary={item.title} />
 							</ListItem>
@@ -177,10 +193,7 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-       
-        <h2>Visualize e edite estilos, svgs, tffs etc!</h2>
-        <span>Alpha Version</span>
-        <FontLister />
+        {contentSelector()}
          
       </main>
     </div>

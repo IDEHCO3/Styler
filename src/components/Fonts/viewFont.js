@@ -20,24 +20,33 @@ export default function ViewFontDialog(props) {
   const useStyles = makeStyles( theme => ({
     fontContainer: {
       fontFamily: props.font.name ? fontName.split('.')[0] : "",
-      fontSize: '50px',
+      fontSize: '40px',
     },
     paper: {
       height: 140,
       width: 100,
+      textAlign: "center",
+    },
+    DialogActions: {
+      justifyContent: "space-between",
+    },
+    titleDialog: {
+      textAlign: "center",
     },
   }));
 
   const classes = useStyles()
-  const caracterList = []
-  if(caracterList.length===0){
-    for(var i=1; i<=255; i++) {
-      let character = String.fromCharCode(i);
-      caracterList.push(character)
+  const [caracterList, setCaracterList] = React.useState([])
+  
+  if( caracterList.length === 0){
+    let caracterListTemp = []
+    for(var i=1; i<=256; i++) {
+      let caracter = String.fromCharCode(i); //transform a intnumber in a char
+      caracterListTemp.push(caracter)
     }
-    console.log(caracterList.length)
+    setCaracterList(caracterListTemp)
   }
-
+  
   function handleClose() {
     props.close()
   }
@@ -51,7 +60,9 @@ export default function ViewFontDialog(props) {
         onClose={handleClose}
         aria-labelledby="max-width-dialog-title"
       >
-        <DialogTitle id="max-width-dialog-title">{fontName}</DialogTitle>
+        <DialogTitle className={classes.titleDialog}>
+          {fontName}
+        </DialogTitle>
         <DialogContent>
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
@@ -69,11 +80,11 @@ export default function ViewFontDialog(props) {
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions>
-          <Button href={fontUrl} color="primary">
+        <DialogActions className={classes.DialogActions}>
+          <Button variant="outlined" href={fontUrl} color="primary">
             Download
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button variant="outlined" onClick={handleClose} color="primary">
             Fechar
           </Button>
         </DialogActions>

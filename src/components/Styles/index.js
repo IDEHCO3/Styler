@@ -1,5 +1,4 @@
 import { api, transformEntryPointInArray } from '../../services/api';
-import ViewFont from './viewFont'
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -17,8 +16,12 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+
+//icons
+import DescriptionIcon from '@material-ui/icons/Description';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -108,64 +111,27 @@ export default function CustomPaginationActionsTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [fontList, setFontList] = React.useState([]);
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [ClickedFont, setClickedFont] = React.useState({})
-
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, fontList.length - page * rowsPerPage);
 
   React.useEffect(() => {
-    getFontListFromApi()
+    getStyleListFromApi()
   }, []) // eslint-disable-line 
   // the [] makes the effect run only once
-
-  function handleOpenViewFont(font) {
-    setClickedFont(font)
-    setIsOpen(true);
-  }
-
-  function handleCloseViewFont() {
-    setIsOpen(false);
-  }
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
   }
 
-  async function getFontListFromApi () {
+  async function getStyleListFromApi () {
     var response = {}
     try{
-      response = await api.get("/fontes")
+      response = await api.get("/ccar")
     } catch (error){
       console.log(error)
     }
     
     let parsedResponse = transformEntryPointInArray(response.data)
     setFontList(parsedResponse)
-    importFontListToCss(parsedResponse)
-  }
-
-  function importFontListToCss (font_list) {
-    let head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style')
-
-    head.appendChild(style);
-    style.type = 'text/css';
-
-    let css =  font_list.map( font => 
-      `@font-face { 
-        font-family: "${font.name.split('.')[0]}";
-        src:  url(${font.url});
-        font-weight: normal;
-        font-style: normal;
-      }`
-    ).join(' ');
-    
-    if (style.styleSheet) {
-      // This is required for IE8 and below.
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }
   }
 
   function handleChangeRowsPerPage(event) {
@@ -179,7 +145,7 @@ export default function CustomPaginationActionsTable() {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Nome da fonte</TableCell>
+              <TableCell>Nome do Estilo </TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -190,12 +156,18 @@ export default function CustomPaginationActionsTable() {
                   {font.name}
                 </TableCell>
                 <TableCell align="right"> 
-                  <IconButton color="primary" onClick={() => handleOpenViewFont(font)}>
-                    <VisibilityIcon/>
-                  </IconButton> 
-                  <IconButton color="primary" href={font.url}>
-                    <GetAppIcon/>
-                  </IconButton> 
+                    <IconButton disabled> 
+                        <VisibilityIcon/>
+                    </IconButton>
+                    <IconButton disabled> 
+                        <EditIcon/>
+                    </IconButton>
+                    <IconButton variant="outlined" color="primary" href={font.url} target="blank" title="Abrir codigo">
+                        <DescriptionIcon/>
+                    </IconButton> 
+                    <IconButton disabled> 
+                        <GetAppIcon/>
+                    </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -226,7 +198,6 @@ export default function CustomPaginationActionsTable() {
           </TableFooter>
         </Table>
       </div>
-      <ViewFont open={isOpen} close={handleCloseViewFont} font={ClickedFont} />
     </Paper>
   );
 }
