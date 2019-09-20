@@ -16,9 +16,10 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import Tooltip from '@material-ui/core/Tooltip';
 
 //icons
-import DescriptionIcon from '@material-ui/icons/Description';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
@@ -162,9 +163,11 @@ export default function CustomPaginationActionsTable() {
                     <IconButton disabled> 
                         <EditIcon/>
                     </IconButton>
-                    <IconButton variant="outlined" color="primary" href={font.url} target="blank" title="Abrir codigo">
-                        <DescriptionIcon/>
-                    </IconButton> 
+                    <Tooltip title="Nova aba">
+                      <IconButton variant="outlined" color="primary" href={font.url} target="blank">
+                        <OpenInNewIcon/>
+                      </IconButton> 
+                    </Tooltip>
                     <IconButton disabled> 
                         <GetAppIcon/>
                     </IconButton>

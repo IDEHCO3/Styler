@@ -13,12 +13,13 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
+import Tooltip from '@material-ui/core/Tooltip';
 
 //icons
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import LastPageIcon from '@material-ui/icons/LastPage';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -173,12 +174,16 @@ export default function CustomPaginationActionsTable() {
                   {item.name}
                 </TableCell>
                 <TableCell align="right"> 
+                  <Tooltip title="Ver">
                     <IconButton color="primary" onClick={() => handleOpenViewSvg(item)}> 
                         <VisibilityIcon/>
                     </IconButton>
-                    <IconButton variant="outlined" color="primary" href={item.url} target="blank" title="Nova aba">
-                        <OpenInNewIcon/>
+                  </Tooltip>
+                  <Tooltip title="Nova Aba">
+                    <IconButton variant="outlined" color="primary" href={item.url} target="blank">
+                      <OpenInNewIcon/>
                     </IconButton> 
+                  </Tooltip>
                     <IconButton disabled> 
                         <GetAppIcon/>
                     </IconButton>

@@ -1,10 +1,8 @@
 import React from 'react';
 import NavBar from './components/NavBar'
 import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-//import { blue, green }  from '@material-ui/core/colors';
+import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // fonte do material design
-import './App.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -13,9 +11,16 @@ const theme = createMuiTheme({
   }
 });
 
+const useStyles = makeStyles(theme => ({
+  app: {
+    textAlign: 'center',
+  },
+}));
+
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
+    <div className={classes.app}>
       <ThemeProvider theme={theme}>
         <NavBar/>
       </ThemeProvider>

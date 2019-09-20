@@ -19,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import TextFormatIcon from '@material-ui/icons/TextFormat';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import HomeIcon from '@material-ui/icons/Home';
 
 // Content Center
 import Home from './Home'
@@ -94,7 +95,8 @@ export default function PersistentDrawerLeft() {
 		icons: [
 			{ title: 'Fontes', icon: 'format_color_text', index: 2},
 			{ title: 'OSM', icon: 'location_on', index: 3}
-		]
+    ],
+    options: [{title: 'Home', icon: 'home', index: 0}]
   }
 
   function iconSelector(iconName) {
@@ -104,8 +106,11 @@ export default function PersistentDrawerLeft() {
       return <TextFormatIcon/>
     } else if ( iconName === 'location_on' ){
       return <LocationOnIcon/>
+    } else if ( iconName === 'home' ){
+      return <HomeIcon/>
     }
-    return null
+
+    return "Adiciona o icone"
   }
 
   function contentSelector(){
@@ -168,23 +173,32 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-            Estilos
-            {DrawerList.styles.map((item, index) => (
-							<ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
-                {iconSelector(item.icon)}
-                <ListItemText primary={item.title} />
-							</ListItem>
-            ))}
+          Estilos
+          {DrawerList.styles.map((item, index) => (
+            <ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
+              {iconSelector(item.icon)}
+              <ListItemText primary={item.title} />
+            </ListItem>
+          ))}
         </List>
         <Divider />
 				<List>
-            Icones
-            {DrawerList.icons.map((item, index) => (
-							<ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
-                {iconSelector(item.icon)}
-                <ListItemText primary={item.title} />
-							</ListItem>
-            ))}
+          Icones
+          {DrawerList.icons.map((item, index) => (
+            <ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
+              {iconSelector(item.icon)}
+              <ListItemText primary={item.title} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+				<List>
+          {DrawerList.options.map((item, index) => (
+            <ListItem button key={index} onClick={()=>setNavIndex(item.index)}>
+              {iconSelector(item.icon)}
+              <ListItemText primary={item.title} />
+            </ListItem>
+          ))}
         </List>
       </Drawer>
       <main

@@ -19,6 +19,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -190,12 +191,16 @@ export default function CustomPaginationActionsTable() {
                   {font.name}
                 </TableCell>
                 <TableCell align="right"> 
-                  <IconButton color="primary" onClick={() => handleOpenViewFont(font)}>
-                    <VisibilityIcon/>
-                  </IconButton> 
-                  <IconButton color="primary" href={font.url}>
-                    <GetAppIcon/>
-                  </IconButton> 
+                  <Tooltip title="Ver">
+                    <IconButton color="primary" onClick={() => handleOpenViewFont(font)}>
+                      <VisibilityIcon/>
+                    </IconButton> 
+                  </Tooltip>
+                  <Tooltip title="Baixar">
+                    <IconButton color="primary" href={font.url}>
+                      <GetAppIcon/>
+                    </IconButton> 
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
